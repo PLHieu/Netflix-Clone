@@ -1,5 +1,5 @@
-import Jumbotron from "./components/jumbotron";
-import jumboData from "./fixtures/jumbo.json";
+import Jumbotron from './components/jumbotron';
+import jumboData from './fixtures/jumbo.json';
 
 function App() {
   return (
