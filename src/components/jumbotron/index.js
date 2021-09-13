@@ -7,26 +7,30 @@ export default function Jumbotron({
   ...restProps
 }) {
   return (
-    <div {...restProps}>{children}</div>
+    <Item>
+      <Inner direction= {direction} {...restProps}>
+        {children}
+      </Inner>
+    </Item>
   );
 }
 
 Jumbotron.Container = function JumbotronContainer({children,...restProps}) {
-  return <div {...restProps}>{children}</div>
+  return <Container {...restProps}>{children}</Container>
 }
 
 Jumbotron.Pane = function JumbotronPane({children,...restProps}) {
-  return <div {...restProps}>{children}</div>
+  return <Pane {...restProps}>{children}</Pane>
 }
 
 Jumbotron.Title = function JumbotronTitle({children,...restProps}) {
-  return <h1 {...restProps}>{children}</h1>
+  return <Title {...restProps}>{children}</Title>
 }
 
 Jumbotron.Subtitle = function JumbotronSubtitle({children,...restProps}) {
-  return <h2 {...restProps}>{children}</h2>
+  return <SubTitle {...restProps}>{children}</SubTitle>
 }
 
 Jumbotron.Image = function JumbotronImage({...restProps}) {
-  return <img {...restProps} />
+  return <Image {...restProps} />
 }
