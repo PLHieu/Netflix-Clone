@@ -1,7 +1,9 @@
 import React, { useContext, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import HeaderContainer from '../containers/header.container';
 import { Form } from '../components';
 import { FirebaseContext } from '../context/firebase';
+import * as ROUTES from '../constants/routes';
 
 function SignUp() {
   const { firebase } = useContext(FirebaseContext);
@@ -10,6 +12,7 @@ function SignUp() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
 
+  const history = useHistory();
   const isInvalid = firstName === '' || email === '' || password === '';
 
   const handleSignup = (event) => {
@@ -18,15 +21,21 @@ function SignUp() {
       .auth()
       .createUserWithEmailAndPassword(email, password)
       .then((result) =>
-        result.user.updateProfile({
-          displayName: firstName,
-        })
+        result.user
+          .updateProfile({
+            displayName: firstName,
+          })
+          .then(() => {
+            localStorage.setItem('authUser', JSON.stringify(result.user));
+            history.push(ROUTES.BROWSE);
+          })
       )
       .catch((error) => {
         setFirstName('');
         setEmail('');
         setPassword('');
         setError(error.message);
+        console.log(error);
       });
   };
 
