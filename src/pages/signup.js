@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { Redirect, useHistory } from 'react-router-dom';
 import HeaderContainer from '../containers/header.container';
 import { Form } from '../components';
 import { FirebaseContext } from '../context/firebase';
@@ -14,6 +14,7 @@ function SignUp() {
 
   const history = useHistory();
   const isInvalid = firstName === '' || email === '' || password === '';
+  const [user] = useState(JSON.parse(localStorage.getItem('authUser')));
 
   const handleSignup = (event) => {
     event.preventDefault();
@@ -39,7 +40,9 @@ function SignUp() {
       });
   };
 
-  return (
+  return user ? (
+    <Redirect to="/" />
+  ) : (
     <HeaderContainer>
       <Form>
         {error && <Form.Error>There some error when signing up</Form.Error>}

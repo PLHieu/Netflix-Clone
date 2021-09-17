@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { Redirect, useHistory } from 'react-router-dom';
 import HeaderContainer from '../containers/header.container';
 import { Form } from '../components';
 import * as ROUTES from '../constants/routes';
@@ -9,6 +9,7 @@ function SignIn() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [user] = useState(JSON.parse(localStorage.getItem('authUser')));
 
   const history = useHistory();
   const { firebase } = useContext(FirebaseContext);
@@ -32,7 +33,9 @@ function SignIn() {
       });
   };
 
-  return (
+  return user ? (
+    <Redirect to="/" />
+  ) : (
     <HeaderContainer>
       <Form>
         {error && <Form.Error>There some error when signing in</Form.Error>}
