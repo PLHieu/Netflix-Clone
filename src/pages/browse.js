@@ -1,8 +1,8 @@
-import { useState } from 'react';
 import { Redirect } from 'react-router-dom';
+import useAuthListener from '../hooks/use-auth-listener';
 
 export default function Browse() {
-  const [user] = useState(JSON.parse(localStorage.getItem('authUser')));
+  const { user } = useAuthListener();
 
   return user ? <div>Browse</div> : <Redirect to="/signin" />;
 }
