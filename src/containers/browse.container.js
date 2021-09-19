@@ -2,16 +2,18 @@ import { getAuth } from 'firebase/auth';
 import React, { useState } from 'react';
 import { Header } from '../components';
 import * as ROUTES from '../constants/routes';
+import { SelectProfileContainer } from './profiles.container';
 
 export function BrowseContainer({ user }) {
   const [category, setCategory] = useState('series');
+  const [profile, setProfile] = useState({});
 
   function signOut() {
     const auth = getAuth();
     auth.signOut();
   }
 
-  return (
+  return profile.displayName ? (
     <Header>
       <Header.Frame>
         <Header.Group>
@@ -49,5 +51,7 @@ export function BrowseContainer({ user }) {
         <Header.PlayButton>Play</Header.PlayButton>
       </Header.Feature>
     </Header>
+  ) : (
+    <SelectProfileContainer user={user} setProfile={setProfile} />
   );
 }
