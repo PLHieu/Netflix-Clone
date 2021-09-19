@@ -1,15 +1,27 @@
-import React from 'react';
+import { getAuth } from 'firebase/auth';
+import React, { useState } from 'react';
 import { Header } from '../components';
 import * as ROUTES from '../constants/routes';
 
-export function BrowseContainer() {
+export function BrowseContainer({ user }) {
+  const [category, setCategory] = useState('series');
+
+  function signOut() {
+    const auth = getAuth();
+    auth.signOut();
+  }
+
   return (
     <Header>
       <Header.Frame>
         <Header.Group>
           <Header.Logo src="../../images/icons/logo.svg" to={ROUTES.HOME} />
-          <Header.TextLink to={null}>Series</Header.TextLink>
-          <Header.TextLink to={null}>Films</Header.TextLink>
+          <Header.TextLink active={category === 'series' ? 'true' : 'false'} onClick={() => setCategory('series')}>
+            Series
+          </Header.TextLink>
+          <Header.TextLink active={category === 'films' ? 'true' : 'false'} onClick={() => setCategory('films')}>
+            Films
+          </Header.TextLink>
         </Header.Group>
         <Header.Group>
           <Header.Search />
@@ -17,10 +29,10 @@ export function BrowseContainer() {
             <Header.Picture src="../../images/users/1.png" />
             <Header.Dropdown>
               <Header.Group>
-                <Header.TextLink to={null}>Phan Long Hieu</Header.TextLink>
+                <Header.TextLink>{user.displayName}</Header.TextLink>
               </Header.Group>
               <Header.Group>
-                <Header.TextLink to={null}>Sign Out</Header.TextLink>
+                <Header.TextLink onClick={() => signOut()}>Sign Out</Header.TextLink>
               </Header.Group>
             </Header.Dropdown>
           </Header.Profile>

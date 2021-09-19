@@ -26,7 +26,7 @@ function App() {
         </Route>
         <Route exact path={ROUTES.BROWSE}>
           <ProtectedRoute user={user}>
-            <Browse />
+            <Browse user={user} />
           </ProtectedRoute>
         </Route>
         <Route exact path="/test">
