@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState } from 'react';
 import { Container, Inner, Frame, Item, Title, Header, Body } from './styles/accordion';
 
-const ToggleFAQContext = createContext({ toggleShow: false, setToggleShow: (toggle) => {} });
+const ToggleFAQContext = createContext({ toggleShow: false, setToggleShow: () => {} });
 
 export default function Accordion({ children }) {
   return (

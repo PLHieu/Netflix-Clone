@@ -77,7 +77,7 @@ Header.Dropdown = function HeaderDropdown({ children, ...restProps }) {
 
 // for feature
 Header.Feature = function HeaderFeature({ children, ...restProps }) {
-  return <Feature>{children}</Feature>;
+  return <Feature {...restProps}>{children}</Feature>;
 };
 
 Header.PlayButton = function HeaderPlayButton({ children, ...restProps }) {
