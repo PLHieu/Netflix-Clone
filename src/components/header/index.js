@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import {
   Background,
@@ -51,12 +52,13 @@ Header.TextLink = function HeaderTextLink({ children, ...restProps }) {
 };
 
 Header.Search = function HeaderSearch({ ...restProps }) {
+  const [active, setActive] = useState(false);
   return (
     <Search {...restProps}>
-      <SearchIcon>
+      <SearchIcon onClick={() => setActive(!active)}>
         <img src="/images/icons/search.png" alt="search icon" />
       </SearchIcon>
-      <SearchInput />
+      <SearchInput active={active} />
     </Search>
   );
 };
