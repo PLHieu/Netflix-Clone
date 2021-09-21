@@ -1,7 +1,7 @@
 import { getAuth } from 'firebase/auth';
 import React, { useState, useEffect } from 'react';
 import Fuse from 'fuse.js';
-import { Header, Loading, Card } from '../components';
+import { Header, Loading, Card, Player } from '../components';
 import * as ROUTES from '../constants/routes';
 import { SelectProfileContainer } from './profiles.container';
 import { FooterContainer } from './footer.container';
@@ -95,7 +95,12 @@ export function BrowseContainer({ user, slides }) {
                 </Card.Item>
               ))}
             </Card.Entities>
-            <Card.Feature category={category} />
+            <Card.Feature category={category}>
+              <Player>
+                <Player.Button />
+                <Player.Video />
+              </Player>
+            </Card.Feature>
           </Card>
         ))}
       </Card.Group>

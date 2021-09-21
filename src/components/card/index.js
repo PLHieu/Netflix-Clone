@@ -1,5 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { CardFeatureContext } from '../../context/cardFeature';
+import { SourcePlayerContext } from '../../context/player';
 
 import {
   Container,
@@ -22,10 +23,13 @@ import {
 export default function Card({ children, ...restProps }) {
   const [showFeature, setShowFeature] = useState(false);
   const [itemFeature, setItemFeature] = useState({});
+  const [srcPlayer, setSrcPlayer] = useState('');
   return (
-    <CardFeatureContext.Provider value={{ itemFeature, showFeature, setShowFeature, setItemFeature }}>
-      <Container {...restProps}>{children}</Container>
-    </CardFeatureContext.Provider>
+    <SourcePlayerContext.Provider value={{ srcPlayer, setSrcPlayer }}>
+      <CardFeatureContext.Provider value={{ itemFeature, showFeature, setShowFeature, setItemFeature }}>
+        <Container {...restProps}>{children}</Container>
+      </CardFeatureContext.Provider>
+    </SourcePlayerContext.Provider>
   );
 }
 
@@ -55,11 +59,13 @@ Card.Meta = function CardMeta({ children, ...restProps }) {
 
 Card.Item = function CardItem({ item, children, ...restProps }) {
   const { setItemFeature, setShowFeature } = useContext(CardFeatureContext);
+  const { setSrcPlayer } = useContext(SourcePlayerContext);
   return (
     <Item
       onClick={() => {
         setItemFeature(item);
         setShowFeature(true);
+        setSrcPlayer('/videos/bunny.mp4');
       }}
       {...restProps}
     >
@@ -72,7 +78,7 @@ Card.Image = function CardImage({ ...restProps }) {
   return <Image {...restProps} />;
 };
 
-Card.Feature = function CardFeature({ category, ...restProps }) {
+Card.Feature = function CardFeature({ category, children, ...restProps }) {
   const { showFeature, itemFeature, setShowFeature } = useContext(CardFeatureContext);
   return showFeature ? (
     <Feature {...restProps} src={`/images/${category}/${itemFeature.genre}/${itemFeature.slug}/large.jpg`}>
@@ -89,6 +95,7 @@ Card.Feature = function CardFeature({ category, ...restProps }) {
             {itemFeature.genre.charAt(0).toUpperCase() + itemFeature.genre.slice(1)}
           </FeatureText>
         </Group>
+        {children}
       </Content>
     </Feature>
   ) : null;
