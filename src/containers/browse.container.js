@@ -1,5 +1,6 @@
 import { getAuth } from 'firebase/auth';
 import React, { useState, useEffect } from 'react';
+import Fuse from 'fuse.js';
 import { Header, Loading, Card } from '../components';
 import * as ROUTES from '../constants/routes';
 import { SelectProfileContainer } from './profiles.container';
@@ -10,6 +11,10 @@ export function BrowseContainer({ user, slides }) {
   const [profile, setProfile] = useState({});
   const [loading, setLoading] = useState(true);
   const [slideRows, setSlideRows] = useState([]);
+  const [inputSearch, setInputSearch] = useState('');
+  const fuse = new Fuse(slideRows, {
+    keys: ['data.description', 'data.title', 'data.genre'],
+  });
 
   function signOut() {
     const auth = getAuth();
@@ -21,6 +26,15 @@ export function BrowseContainer({ user, slides }) {
       setLoading(false);
     }, 3000);
   }, [profile]);
+
+  useEffect(() => {
+    const results = fuse.search(inputSearch).map(({ item }) => item);
+    if (inputSearch.length <= 3) {
+      setSlideRows(slides[category]);
+    } else {
+      setSlideRows(results);
+    }
+  }, [inputSearch]);
 
   useEffect(() => {
     setSlideRows(slides[category]);
@@ -41,7 +55,7 @@ export function BrowseContainer({ user, slides }) {
             </Header.TextLink>
           </Header.Group>
           <Header.Group>
-            <Header.Search />
+            <Header.Search setInputSearch={setInputSearch} />
             <Header.Profile>
               <Header.Picture src="../../images/users/1.png" />
               <Header.Dropdown>

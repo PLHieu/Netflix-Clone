@@ -51,14 +51,14 @@ Header.TextLink = function HeaderTextLink({ children, ...restProps }) {
   return <TextLink {...restProps}>{children}</TextLink>;
 };
 
-Header.Search = function HeaderSearch({ ...restProps }) {
+Header.Search = function HeaderSearch({ setInputSearch, ...restProps }) {
   const [active, setActive] = useState(false);
   return (
     <Search {...restProps}>
       <SearchIcon onClick={() => setActive(!active)}>
         <img src="/images/icons/search.png" alt="search icon" />
       </SearchIcon>
-      <SearchInput active={active} />
+      <SearchInput onChange={(event) => setInputSearch(event.target.value)} active={active} />
     </Search>
   );
 };
