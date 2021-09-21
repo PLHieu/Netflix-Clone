@@ -1,9 +1,32 @@
-import React from 'react';
+import React, { useContext, useState } from 'react';
+import { CardFeatureContext } from '../../context/cardFeature';
 
-import { Container, Group, Title, SubTitle, Text, Meta, Entities, Item, Image } from './styles/card';
+import {
+  Container,
+  Group,
+  Title,
+  SubTitle,
+  Text,
+  Meta,
+  Entities,
+  Item,
+  Image,
+  Feature,
+  Content,
+  FeatureText,
+  FeatureTitle,
+  FeatureClose,
+  Maturity,
+} from './styles/card';
 
 export default function Card({ children, ...restProps }) {
-  return <Container {...restProps}>{children}</Container>;
+  const [showFeature, setShowFeature] = useState(false);
+  const [itemFeature, setItemFeature] = useState({});
+  return (
+    <CardFeatureContext.Provider value={{ itemFeature, showFeature, setShowFeature, setItemFeature }}>
+      <Container {...restProps}>{children}</Container>
+    </CardFeatureContext.Provider>
+  );
 }
 
 Card.Group = function CardGroup({ children, ...restProps }) {
@@ -30,10 +53,43 @@ Card.Meta = function CardMeta({ children, ...restProps }) {
   return <Meta {...restProps}>{children}</Meta>;
 };
 
-Card.Item = function CardItem({ children, ...restProps }) {
-  return <Item {...restProps}>{children}</Item>;
+Card.Item = function CardItem({ item, children, ...restProps }) {
+  const { setItemFeature, setShowFeature } = useContext(CardFeatureContext);
+  return (
+    <Item
+      onClick={() => {
+        setItemFeature(item);
+        setShowFeature(true);
+      }}
+      {...restProps}
+    >
+      {children}
+    </Item>
+  );
 };
 
 Card.Image = function CardImage({ ...restProps }) {
   return <Image {...restProps} />;
+};
+
+Card.Feature = function CardFeature({ category, ...restProps }) {
+  const { showFeature, itemFeature, setShowFeature } = useContext(CardFeatureContext);
+  return showFeature ? (
+    <Feature {...restProps} src={`/images/${category}/${itemFeature.genre}/${itemFeature.slug}/large.jpg`}>
+      <Content>
+        <FeatureTitle>{itemFeature.title}</FeatureTitle>
+        <FeatureText>{itemFeature.description}</FeatureText>
+        <FeatureClose onClick={() => setShowFeature(false)}>
+          <img src="/images/icons/close.png" alt="close" />
+        </FeatureClose>
+
+        <Group margin="30px 0" flexDirection="row" alignItems="center">
+          <Maturity rating={itemFeature.maturity}>{itemFeature.maturity < 12 ? 'PG' : itemFeature.maturity}</Maturity>
+          <FeatureText fontWeight="bold">
+            {itemFeature.genre.charAt(0).toUpperCase() + itemFeature.genre.slice(1)}
+          </FeatureText>
+        </Group>
+      </Content>
+    </Feature>
+  ) : null;
 };
