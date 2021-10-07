@@ -11,7 +11,7 @@ function JumbotronContainer() {
             <Jumbotron.Subtitle>{movie.subTitle}</Jumbotron.Subtitle>
           </Jumbotron.Pane>
           <Jumbotron.Pane>
-            <Jumbotron.Image src={movie.image} />
+            <Jumbotron.Image alt={movie.alt} src={movie.image} />
           </Jumbotron.Pane>
         </Jumbotron>
       ))}
